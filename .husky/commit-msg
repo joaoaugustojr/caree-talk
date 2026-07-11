@@ -1,1 +1,28 @@
-pnpm exec commitlint --edit "$1"
+#!/usr/bin/env bash
+set -e
+
+# Match Node runtime behavior used by pre-commit.
+NODE_BIN=""
+for candidate in \
+  "$HOME/.nvm/versions/node/v23.9.0/bin/node" \
+  "$HOME/.nvm/versions/node/v20.20.2/bin/node" \
+  "$HOME/.nvm/versions/node/v20.17.0/bin/node" \
+  "$HOME/.nvm/versions/node/v20.15.0/bin/node"
+do
+  if [ -x "$candidate" ]; then
+    NODE_BIN="$candidate"
+    break
+  fi
+done
+
+if [ -z "$NODE_BIN" ]; then
+  NODE_BIN="$(command -v node || true)"
+fi
+
+if [ -z "$NODE_BIN" ]; then
+  echo "husky: could not find node runtime" >&2
+  exit 1
+fi
+
+COMMITLINT_BIN="$("$NODE_BIN" -e "console.log(require.resolve('@commitlint/cli/cli.js'))")"
+"$NODE_BIN" "$COMMITLINT_BIN" --edit "$1"
