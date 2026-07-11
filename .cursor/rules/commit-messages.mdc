@@ -1,0 +1,56 @@
+---
+description: Conventional Commits for Next.js frontend
+alwaysApply: true
+---
+
+# Frontend Commit Standard (Next.js + React)
+
+Use **Conventional Commits** in this format:
+
+```text
+type(scope): subject
+```
+
+## Allowed Types
+
+Use only: `feat`, `fix`, `refactor`, `perf`, `style`, `test`, `docs`, `build`, `ci`, `chore`, `revert`.
+
+## Subject Rules
+
+- Write in English, imperative mood, lowercase start.
+- Max 72 chars, no trailing period.
+- Be specific; avoid generic words (`update`, `changes`, `misc`, `wip`, `temp`).
+
+## Frontend Scopes
+
+Prefer frontend scopes such as:
+`app`, `ui`, `layout`, `routing`, `navigation`, `forms`, `validation`, `auth`, `theme`, `styles`, `a11y`, `seo`, `api-client`, `state`, `deps`, `config`, `build`, `ci`.
+
+Avoid backend-oriented scopes like `endpoint`, `controller`, `laravel`, `php`.
+
+## Breaking Changes
+
+Use `!` for breaking changes:
+
+```text
+feat(routing)!: rename dashboard route segment
+```
+
+## Frontend Examples
+
+```text
+feat(ui): add talk card component
+fix(forms): prevent empty search submission
+refactor(app): split home page sections
+perf(images): optimize hero image loading
+test(ui): add talk card rendering tests
+docs(readme): document local setup with pnpm
+chore(deps): upgrade eslint and prettier
+ci(github): add frontend lint workflow
+```
+
+## AI Commit Generation
+
+- Analyze staged changes only.
+- Pick the most accurate type/scope for frontend context.
+- Return only the commit message unless explanation is requested.
