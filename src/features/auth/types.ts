@@ -1,3 +1,5 @@
+import type { LoginFormValues } from "./schemas/login";
+
 export type UserRole = "master" | "admin" | "tutor" | "student";
 
 export type User = {
@@ -9,10 +11,7 @@ export type User = {
   updated_at?: string | null;
 };
 
-export type LoginPayload = {
-  email: string;
-  password: string;
-};
+export type LoginPayload = LoginFormValues;
 
 export type AuthTokenData = {
   user: User;

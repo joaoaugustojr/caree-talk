@@ -1,0 +1,4 @@
+{
+  "title": "Dashboard",
+  "subtitle": "Login concluído. Em seguida vamos proteger esta rota com serverApi(\"/auth/me\")."
+}
