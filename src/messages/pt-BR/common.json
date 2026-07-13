@@ -1,0 +1,10 @@
+{
+  "actions": {
+    "signIn": "Entrar",
+    "createAccount": "Criar conta",
+    "back": "Voltar"
+  },
+  "metadata": {
+    "description": "Plataforma Career Talk para conectar tutors e students."
+  }
+}

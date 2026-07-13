@@ -1,0 +1,10 @@
+{
+  "actions": {
+    "signIn": "Sign in",
+    "createAccount": "Create account",
+    "back": "Back"
+  },
+  "metadata": {
+    "description": "Career Talk platform connecting tutors and students."
+  }
+}
