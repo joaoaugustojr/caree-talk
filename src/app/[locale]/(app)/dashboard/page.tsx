@@ -12,8 +12,8 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-3xl flex-col justify-center px-6 py-12">
-      <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">{t("title")}</h1>
-      <p className="mt-3 text-zinc-600">{t("subtitle")}</p>
+      <h1 className="text-3xl font-semibold tracking-tight text-foreground">{t("title")}</h1>
+      <p className="mt-3 text-muted-foreground">{t("subtitle")}</p>
     </main>
   );
 }

@@ -1,7 +1,8 @@
 import { cookies } from "next/headers";
 
-/** Cookie name for the Bearer access token. */
-export const ACCESS_TOKEN_COOKIE = "access_token";
+import { ACCESS_TOKEN_COOKIE } from "@/lib/auth/constants";
+
+export { ACCESS_TOKEN_COOKIE };
 
 const cookieOptions = {
   httpOnly: true, // JS in the browser cannot read this — mitigates XSS token theft
