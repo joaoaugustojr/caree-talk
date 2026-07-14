@@ -4,6 +4,12 @@
     "createAccount": "Criar conta",
     "back": "Voltar"
   },
+  "theme": {
+    "label": "Tema de cores",
+    "light": "Claro",
+    "dark": "Escuro",
+    "system": "Sistema"
+  },
   "metadata": {
     "description": "Plataforma Career Talk para conectar tutors e students."
   }
