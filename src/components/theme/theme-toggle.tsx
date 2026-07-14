@@ -6,7 +6,7 @@ import { useTheme } from "next-themes";
 import { useState, useSyncExternalStore } from "react";
 
 import { Button } from "@/components/ui/button";
-import { isThemePreference, type ThemePreference } from "@/lib/theme/constants";
+import { DEFAULT_THEME, isThemePreference, type ThemePreference } from "@/lib/theme/constants";
 import { cn } from "@/lib/utils";
 
 const OPTIONS: { value: ThemePreference; icon: typeof Sun }[] = [
@@ -33,7 +33,7 @@ export function ThemeToggle({ className }: { className?: string }) {
   const mounted = useHasMounted();
   const [open, setOpen] = useState(false);
 
-  const activeTheme: ThemePreference = isThemePreference(theme) ? theme : "system";
+  const activeTheme: ThemePreference = isThemePreference(theme) ? theme : DEFAULT_THEME;
 
   if (!mounted) {
     return <div className={cn("h-8 w-8 rounded-lg border border-border", className)} aria-hidden />;

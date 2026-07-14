@@ -3,7 +3,7 @@
 import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
 import { useEffect } from "react";
 
-import { isThemePreference, type ThemePreference } from "@/lib/theme/constants";
+import { DEFAULT_THEME, isThemePreference, type ThemePreference } from "@/lib/theme/constants";
 import { setThemeCookie } from "@/lib/theme/cookie";
 
 function ThemeCookieSync() {
@@ -22,10 +22,10 @@ function ThemeCookieSync() {
 
 type ThemeProviderProps = {
   children: React.ReactNode;
-  defaultTheme: ThemePreference;
+  defaultTheme?: ThemePreference;
 };
 
-export function ThemeProvider({ children, defaultTheme }: ThemeProviderProps) {
+export function ThemeProvider({ children, defaultTheme = DEFAULT_THEME }: ThemeProviderProps) {
   return (
     <NextThemesProvider
       attribute="class"

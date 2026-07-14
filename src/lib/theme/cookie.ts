@@ -1,4 +1,5 @@
 import {
+  DEFAULT_THEME,
   isThemePreference,
   THEME_COOKIE,
   THEME_COOKIE_MAX_AGE,
@@ -6,7 +7,7 @@ import {
 } from "./constants";
 
 export function parseThemeCookie(value: string | undefined): ThemePreference {
-  return isThemePreference(value) ? value : "system";
+  return isThemePreference(value) ? value : DEFAULT_THEME;
 }
 
 /** Client-only: persist preference for SSR on the next request. */
