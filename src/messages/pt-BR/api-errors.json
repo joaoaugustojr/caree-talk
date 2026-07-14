@@ -1,0 +1,26 @@
+{
+  "fallback": "Algo deu errado. Tente novamente.",
+  "auth": {
+    "invalid_credentials": "As credenciais informadas estão incorretas.",
+    "invalid_reset_token": "Este link de redefinição é inválido ou expirou.",
+    "invalid_reset_user": "Não encontramos uma conta com este e-mail.",
+    "reset_throttled": "Muitas tentativas de redefinição. Aguarde e tente novamente.",
+    "password_reset_failed": "Não foi possível redefinir a senha. Tente novamente."
+  },
+  "validation": {
+    "required": "Este campo é obrigatório",
+    "email": "Informe um e-mail válido",
+    "string": "Valor inválido",
+    "min": "Deve ter no mínimo {min} caracteres",
+    "max": "Deve ter no máximo {max} caracteres",
+    "between": "Deve estar entre {min} e {max}",
+    "unique": "Este valor já está em uso",
+    "confirmed": "A confirmação não confere",
+    "exists": "Valor selecionado inválido",
+    "in": "Valor selecionado inválido",
+    "numeric": "Deve ser um número",
+    "boolean": "Valor inválido",
+    "uuid": "Identificador inválido",
+    "custom": "Valor inválido"
+  }
+}

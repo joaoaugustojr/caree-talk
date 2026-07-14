@@ -1,0 +1,26 @@
+{
+  "fallback": "Something went wrong. Please try again.",
+  "auth": {
+    "invalid_credentials": "The provided credentials are incorrect.",
+    "invalid_reset_token": "This password reset link is invalid or has expired.",
+    "invalid_reset_user": "We could not find an account for that email.",
+    "reset_throttled": "Too many reset attempts. Please wait and try again.",
+    "password_reset_failed": "Unable to reset password. Please try again."
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Enter a valid email",
+    "string": "Invalid value",
+    "min": "Must be at least {min} characters",
+    "max": "Must be at most {max} characters",
+    "between": "Must be between {min} and {max}",
+    "unique": "This value is already in use",
+    "confirmed": "Confirmation does not match",
+    "exists": "Selected value is invalid",
+    "in": "Selected value is invalid",
+    "numeric": "Must be a number",
+    "boolean": "Invalid value",
+    "uuid": "Invalid identifier",
+    "custom": "Invalid value"
+  }
+}
