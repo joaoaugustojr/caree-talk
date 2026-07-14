@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
@@ -26,17 +25,20 @@ export default async function RegisterPage({ params }: RegisterPageProps) {
   const t = await getTranslations("Auth");
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="text-2xl tracking-tight">{t("register.title")}</CardTitle>
-        <CardDescription>{t("register.subtitle")}</CardDescription>
-      </CardHeader>
+    <div className="space-y-8">
+      <header className="space-y-2">
+        <h1 className="text-3xl font-semibold tracking-tight text-foreground">
+          {t("register.title")}
+        </h1>
+        <p className="text-sm leading-relaxed text-muted-foreground">{t("register.subtitle")}</p>
+      </header>
 
-      <CardContent>
-        <Link href="/login" className={cn(buttonVariants({ variant: "outline" }), "w-full")}>
-          {t("register.backToLogin")}
-        </Link>
-      </CardContent>
-    </Card>
+      <Link
+        href="/login"
+        className={cn(buttonVariants({ variant: "outline", size: "lg" }), "w-full")}
+      >
+        {t("register.backToLogin")}
+      </Link>
+    </div>
   );
 }

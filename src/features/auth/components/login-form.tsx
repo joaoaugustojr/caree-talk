@@ -90,6 +90,7 @@ export function LoginForm() {
             onFocus={() => setAutofillUnlocked(true)}
             value={values.email}
             onChange={(event) => updateField("email", event.target.value)}
+            className="h-11"
             aria-invalid={Boolean(fieldErrors.email) || undefined}
             aria-describedby={fieldErrors.email ? "email-error" : undefined}
           />
@@ -108,7 +109,7 @@ export function LoginForm() {
               onFocus={() => setAutofillUnlocked(true)}
               value={values.password}
               onChange={(event) => updateField("password", event.target.value)}
-              className="pr-9"
+              className="h-11 pr-9"
               aria-invalid={Boolean(fieldErrors.password) || undefined}
               aria-describedby={fieldErrors.password ? "password-error" : undefined}
             />
@@ -140,7 +141,7 @@ export function LoginForm() {
 
         {formError ? <FieldError>{formError}</FieldError> : null}
 
-        <Button type="submit" className="w-full" size="lg" disabled={loading}>
+        <Button type="submit" className="mt-1 h-11 w-full" size="lg" disabled={loading}>
           {loading ? t("form.submitting") : t("form.submit")}
         </Button>
       </FieldGroup>
