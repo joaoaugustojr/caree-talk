@@ -10,7 +10,7 @@ import { routing } from "@/i18n/routing";
 import "../globals.css";
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
+  variable: "--font-sans",
   subsets: ["latin"],
 });
 
