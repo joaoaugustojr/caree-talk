@@ -23,7 +23,9 @@ export default async function AuthLayout({ children, params }: AuthLayoutProps) 
       />
 
       <div className="mb-10 text-center">
-        <p className="text-sm font-medium tracking-[0.2em] text-zinc-500 uppercase">{BRAND_NAME}</p>
+        <p className="text-sm font-medium tracking-[0.2em] text-muted-foreground uppercase">
+          {BRAND_NAME}
+        </p>
       </div>
 
       <div className="w-full max-w-md">{children}</div>

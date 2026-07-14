@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
+import { cn } from "@/lib/utils";
 
 type RegisterPageProps = {
   params: Promise<{ locale: string }>;
@@ -23,20 +26,17 @@ export default async function RegisterPage({ params }: RegisterPageProps) {
   const t = await getTranslations("Auth");
 
   return (
-    <section className="rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm">
-      <header className="mb-6 space-y-2">
-        <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
-          {t("register.title")}
-        </h1>
-        <p className="text-sm text-zinc-600">{t("register.subtitle")}</p>
-      </header>
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle className="text-2xl tracking-tight">{t("register.title")}</CardTitle>
+        <CardDescription>{t("register.subtitle")}</CardDescription>
+      </CardHeader>
 
-      <Link
-        href="/login"
-        className="text-sm font-medium text-zinc-900 underline-offset-4 hover:underline"
-      >
-        {t("register.backToLogin")}
-      </Link>
-    </section>
+      <CardContent>
+        <Link href="/login" className={cn(buttonVariants({ variant: "outline" }), "w-full")}>
+          {t("register.backToLogin")}
+        </Link>
+      </CardContent>
+    </Card>
   );
 }

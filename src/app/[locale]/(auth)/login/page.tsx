@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { LoginForm } from "@/features/auth/components/login-form";
 import { Link } from "@/i18n/navigation";
 
@@ -25,23 +33,27 @@ export default async function LoginPage({ params }: LoginPageProps) {
   const t = await getTranslations("Auth");
 
   return (
-    <section className="rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm">
-      <header className="mb-8 space-y-2">
-        <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">{t("login.title")}</h1>
-        <p className="text-sm text-zinc-600">{t("login.subtitle")}</p>
-      </header>
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle className="text-2xl tracking-tight">{t("login.title")}</CardTitle>
+        <CardDescription>{t("login.subtitle")}</CardDescription>
+      </CardHeader>
 
-      <LoginForm />
+      <CardContent>
+        <LoginForm />
+      </CardContent>
 
-      <p className="mt-6 text-center text-sm text-zinc-600">
-        {t("login.noAccount")}{" "}
-        <Link
-          href="/register"
-          className="font-medium text-zinc-900 underline-offset-4 hover:underline"
-        >
-          {t("login.createAccount")}
-        </Link>
-      </p>
-    </section>
+      <CardFooter className="justify-center">
+        <p className="text-sm text-muted-foreground">
+          {t("login.noAccount")}{" "}
+          <Link
+            href="/register"
+            className="font-medium text-foreground underline-offset-4 hover:underline"
+          >
+            {t("login.createAccount")}
+          </Link>
+        </p>
+      </CardFooter>
+    </Card>
   );
 }

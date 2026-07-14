@@ -1,40 +1,23 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { flattenError } from "zod";
 
+import { Button } from "@/components/ui/button";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { useApiFormErrors } from "@/hooks/use-api-form-errors";
 import { useRouter } from "@/i18n/navigation";
-import { ApiError } from "@/lib/api/types";
-import { cn } from "@/lib/cn";
 
 import { createLoginSchema, type LoginFormValues } from "../schemas/login";
 import { login } from "../services/login";
 
-type FieldErrors = Partial<Record<keyof LoginFormValues, string>>;
+const LOGIN_FIELDS = ["email", "password"] as const;
 
-const inputClassName = cn(
-  "w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5",
-  "text-sm text-zinc-900 outline-none transition focus:border-zinc-900 focus:ring-2 focus:ring-zinc-900/10",
-);
-
-function getFieldErrors(error: unknown): FieldErrors {
-  if (!(error instanceof ApiError) || !error.body || typeof error.body !== "object") {
-    return {};
-  }
-
-  const body = error.body as {
-    errors?: Record<string, string[]>;
-  };
-
-  if (!body.errors) {
-    return {};
-  }
-
-  return {
-    email: body.errors.email?.[0],
-    password: body.errors.password?.[0],
-  };
+function toClientErrorMessage(value: unknown): string | undefined {
+  return typeof value === "string" && value.length > 0 ? value : undefined;
 }
 
 export function LoginForm() {
@@ -42,43 +25,42 @@ export function LoginForm() {
   const router = useRouter();
   const loginSchema = useMemo(() => createLoginSchema(t), [t]);
 
+  const {
+    fieldErrors,
+    formError,
+    applyApiErrors,
+    clearFieldError,
+    clearErrors,
+    setClientFieldErrors,
+  } = useApiFormErrors(LOGIN_FIELDS);
+
   const [values, setValues] = useState<LoginFormValues>({
     email: "",
     password: "",
   });
-  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
-  const [formError, setFormError] = useState<string | null>(null);
+
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   // Chrome applies autofill styles before user interaction and blows up
   // font-size; readOnly until focus delays autofill until styles stick.
   const [autofillUnlocked, setAutofillUnlocked] = useState(false);
 
   function updateField<K extends keyof LoginFormValues>(field: K, value: LoginFormValues[K]) {
     setValues((current) => ({ ...current, [field]: value }));
-    setFieldErrors((current) => ({ ...current, [field]: undefined }));
-    setFormError(null);
-  }
-
-  function getFormMessage(error: unknown): string {
-    if (error instanceof ApiError && error.body && typeof error.body === "object") {
-      const message = (error.body as { message?: string }).message;
-      if (message) return message;
-    }
-
-    return t("errors.loginFailed");
+    clearFieldError(field);
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setFormError(null);
+    clearErrors();
 
     const parsed = loginSchema.safeParse(values);
 
     if (!parsed.success) {
       const flattened = flattenError(parsed.error);
-      setFieldErrors({
-        email: flattened.fieldErrors.email?.[0],
-        password: flattened.fieldErrors.password?.[0],
+      setClientFieldErrors({
+        email: toClientErrorMessage(flattened.fieldErrors.email?.[0]),
+        password: toClientErrorMessage(flattened.fieldErrors.password?.[0]),
       });
       return;
     }
@@ -89,80 +71,79 @@ export function LoginForm() {
       await login(parsed.data);
       router.push("/dashboard");
     } catch (error) {
-      setFieldErrors(getFieldErrors(error));
-      setFormError(getFormMessage(error));
+      applyApiErrors(error);
       setLoading(false);
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5" noValidate>
-      <div className="space-y-2">
-        <label htmlFor="email" className="block text-sm font-medium text-zinc-700">
-          {t("form.email")}
-        </label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          autoComplete="email"
-          readOnly={!autofillUnlocked}
-          onFocus={() => setAutofillUnlocked(true)}
-          value={values.email}
-          onChange={(event) => updateField("email", event.target.value)}
-          className={cn(
-            inputClassName,
-            fieldErrors.email && "border-red-500 focus:border-red-500 focus:ring-red-500/10",
-          )}
-          aria-invalid={Boolean(fieldErrors.email)}
-          aria-describedby={fieldErrors.email ? "email-error" : undefined}
-        />
-        {fieldErrors.email ? (
-          <p id="email-error" className="text-sm text-red-600">
-            {fieldErrors.email}
-          </p>
-        ) : null}
-      </div>
+    <form onSubmit={handleSubmit} noValidate>
+      <FieldGroup>
+        <Field data-invalid={Boolean(fieldErrors.email) || undefined}>
+          <FieldLabel htmlFor="email">{t("form.email")}</FieldLabel>
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            readOnly={!autofillUnlocked}
+            onFocus={() => setAutofillUnlocked(true)}
+            value={values.email}
+            onChange={(event) => updateField("email", event.target.value)}
+            aria-invalid={Boolean(fieldErrors.email) || undefined}
+            aria-describedby={fieldErrors.email ? "email-error" : undefined}
+          />
+          <FieldError id="email-error">{fieldErrors.email}</FieldError>
+        </Field>
 
-      <div className="space-y-2">
-        <label htmlFor="password" className="block text-sm font-medium text-zinc-700">
-          {t("form.password")}
-        </label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          autoComplete="current-password"
-          readOnly={!autofillUnlocked}
-          onFocus={() => setAutofillUnlocked(true)}
-          value={values.password}
-          onChange={(event) => updateField("password", event.target.value)}
-          className={cn(
-            inputClassName,
-            fieldErrors.password && "border-red-500 focus:border-red-500 focus:ring-red-500/10",
-          )}
-          aria-invalid={Boolean(fieldErrors.password)}
-          aria-describedby={fieldErrors.password ? "password-error" : undefined}
-        />
-        {fieldErrors.password ? (
-          <p id="password-error" className="text-sm text-red-600">
-            {fieldErrors.password}
-          </p>
-        ) : null}
-      </div>
+        <Field data-invalid={Boolean(fieldErrors.password) || undefined}>
+          <FieldLabel htmlFor="password">{t("form.password")}</FieldLabel>
+          <div className="relative">
+            <Input
+              id="password"
+              name="password"
+              type={showPassword ? "text" : "password"}
+              autoComplete="current-password"
+              readOnly={!autofillUnlocked}
+              onFocus={() => setAutofillUnlocked(true)}
+              value={values.password}
+              onChange={(event) => updateField("password", event.target.value)}
+              className="pr-9"
+              aria-invalid={Boolean(fieldErrors.password) || undefined}
+              aria-describedby={fieldErrors.password ? "password-error" : undefined}
+            />
+            <button
+              type="button"
+              className="absolute inset-y-0 right-1 my-auto flex size-7 items-center justify-center text-muted-foreground hover:text-foreground"
+              onClick={() => setShowPassword((current) => !current)}
+              aria-label={showPassword ? t("form.hidePassword") : t("form.showPassword")}
+              aria-pressed={showPassword}
+            >
+              <span className="relative size-4">
+                <Eye
+                  className={
+                    showPassword ? "invisible absolute inset-0 size-4" : "absolute inset-0 size-4"
+                  }
+                  aria-hidden
+                />
+                <EyeOff
+                  className={
+                    showPassword ? "absolute inset-0 size-4" : "invisible absolute inset-0 size-4"
+                  }
+                  aria-hidden
+                />
+              </span>
+            </button>
+          </div>
+          <FieldError id="password-error">{fieldErrors.password}</FieldError>
+        </Field>
 
-      {formError ? <p className="text-sm text-red-600">{formError}</p> : null}
+        {formError ? <FieldError>{formError}</FieldError> : null}
 
-      <button
-        type="submit"
-        disabled={loading}
-        className={cn(
-          "w-full rounded-lg bg-zinc-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800",
-          "disabled:cursor-not-allowed disabled:opacity-60",
-        )}
-      >
-        {loading ? t("form.submitting") : t("form.submit")}
-      </button>
+        <Button type="submit" className="w-full" size="lg" disabled={loading}>
+          {loading ? t("form.submitting") : t("form.submit")}
+        </Button>
+      </FieldGroup>
     </form>
   );
 }
