@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
 import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
+import { useEffect } from "react";
 
 import { isThemePreference, type ThemePreference } from "@/lib/theme/constants";
 import { setThemeCookie } from "@/lib/theme/cookie";

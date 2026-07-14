@@ -1,5 +1,5 @@
-import { setRequestLocale } from "next-intl/server";
 import { redirect } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
 
 import type { User } from "@/features/auth/types";
 import { serverApi } from "@/lib/api/server";

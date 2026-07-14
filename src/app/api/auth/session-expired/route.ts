@@ -1,8 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server";
 
+import { type AppLocale, routing } from "@/i18n/routing";
 import { buildClearAuthCookie } from "@/lib/auth/cookies";
 import { withLocalePrefix } from "@/lib/auth/routes";
-import { routing, type AppLocale } from "@/i18n/routing";
 
 /**
  * Clears an invalid session cookie and sends the user to login.

@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+
 import { proxyRequest } from "@/lib/api/proxy";
 
 type RouteContext = {

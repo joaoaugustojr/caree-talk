@@ -1,4 +1,5 @@
 import { getAccessToken } from "@/lib/auth/cookies";
+
 import { ApiError, type ApiRequestOptions } from "./types";
 
 const API_URL = process.env.API_URL;

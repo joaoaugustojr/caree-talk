@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Geist_Mono, Instrument_Sans } from "next/font/google";
-import { hasLocale, NextIntlClientProvider } from "next-intl";
-import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
+import { hasLocale, NextIntlClientProvider } from "next-intl";
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { BRAND_NAME } from "@/config/brand";

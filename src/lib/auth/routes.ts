@@ -1,4 +1,4 @@
-import { routing, type AppLocale } from "@/i18n/routing";
+import { type AppLocale, routing } from "@/i18n/routing";
 
 /** Guest-only routes: redirect to dashboard when a session cookie exists. */
 export const AUTH_GUEST_ROUTES = ["/login", "/register"] as const;

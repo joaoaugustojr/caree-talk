@@ -1,5 +1,6 @@
 import { browserApi } from "@/lib/api/browser";
 import type { ApiSuccess } from "@/lib/api/types";
+
 import type { LoginPayload, User } from "../types";
 
 /**
