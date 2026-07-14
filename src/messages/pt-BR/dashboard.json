@@ -1,4 +1,6 @@
 {
   "title": "Dashboard",
-  "subtitle": "Login concluído. Em seguida vamos proteger esta rota com serverApi(\"/auth/me\")."
+  "subtitle": "Login concluído. Em seguida vamos proteger esta rota com serverApi(\"/auth/me\").",
+  "logout": "Sair",
+  "loggingOut": "Saindo…"
 }

@@ -1,5 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
+import { LogoutButton } from "@/features/auth/components/logout-button";
+
 type DashboardPageProps = {
   params: Promise<{ locale: string }>;
 };
@@ -14,6 +16,9 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
     <main className="mx-auto flex min-h-screen w-full max-w-3xl flex-col justify-center px-6 py-12">
       <h1 className="text-3xl font-semibold tracking-tight text-foreground">{t("title")}</h1>
       <p className="mt-3 text-muted-foreground">{t("subtitle")}</p>
+      <div className="mt-8">
+        <LogoutButton />
+      </div>
     </main>
   );
 }

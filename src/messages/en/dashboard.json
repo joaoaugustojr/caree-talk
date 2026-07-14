@@ -1,4 +1,6 @@
 {
   "title": "Dashboard",
-  "subtitle": "Sign-in completed. Next we will protect this route with serverApi(\"/auth/me\")."
+  "subtitle": "Sign-in completed. Next we will protect this route with serverApi(\"/auth/me\").",
+  "logout": "Log out",
+  "loggingOut": "Logging out…"
 }
