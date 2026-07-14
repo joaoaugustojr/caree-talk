@@ -6,11 +6,17 @@ import { flattenError } from "zod";
 
 import { useRouter } from "@/i18n/navigation";
 import { ApiError } from "@/lib/api/types";
+import { cn } from "@/lib/cn";
 
 import { createLoginSchema, type LoginFormValues } from "../schemas/login";
 import { login } from "../services/login";
 
 type FieldErrors = Partial<Record<keyof LoginFormValues, string>>;
+
+const inputClassName = cn(
+  "w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5",
+  "text-sm text-zinc-900 outline-none transition focus:border-zinc-900 focus:ring-2 focus:ring-zinc-900/10",
+);
 
 function getFieldErrors(error: unknown): FieldErrors {
   if (!(error instanceof ApiError) || !error.body || typeof error.body !== "object") {
@@ -43,6 +49,9 @@ export function LoginForm() {
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [formError, setFormError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  // Chrome applies autofill styles before user interaction and blows up
+  // font-size; readOnly until focus delays autofill until styles stick.
+  const [autofillUnlocked, setAutofillUnlocked] = useState(false);
 
   function updateField<K extends keyof LoginFormValues>(field: K, value: LoginFormValues[K]) {
     setValues((current) => ({ ...current, [field]: value }));
@@ -79,11 +88,9 @@ export function LoginForm() {
     try {
       await login(parsed.data);
       router.push("/dashboard");
-      router.refresh();
     } catch (error) {
       setFieldErrors(getFieldErrors(error));
       setFormError(getFormMessage(error));
-    } finally {
       setLoading(false);
     }
   }
@@ -99,9 +106,14 @@ export function LoginForm() {
           name="email"
           type="email"
           autoComplete="email"
+          readOnly={!autofillUnlocked}
+          onFocus={() => setAutofillUnlocked(true)}
           value={values.email}
           onChange={(event) => updateField("email", event.target.value)}
-          className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-zinc-900 outline-none transition focus:border-zinc-900 focus:ring-2 focus:ring-zinc-900/10"
+          className={cn(
+            inputClassName,
+            fieldErrors.email && "border-red-500 focus:border-red-500 focus:ring-red-500/10",
+          )}
           aria-invalid={Boolean(fieldErrors.email)}
           aria-describedby={fieldErrors.email ? "email-error" : undefined}
         />
@@ -121,9 +133,14 @@ export function LoginForm() {
           name="password"
           type="password"
           autoComplete="current-password"
+          readOnly={!autofillUnlocked}
+          onFocus={() => setAutofillUnlocked(true)}
           value={values.password}
           onChange={(event) => updateField("password", event.target.value)}
-          className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 text-zinc-900 outline-none transition focus:border-zinc-900 focus:ring-2 focus:ring-zinc-900/10"
+          className={cn(
+            inputClassName,
+            fieldErrors.password && "border-red-500 focus:border-red-500 focus:ring-red-500/10",
+          )}
           aria-invalid={Boolean(fieldErrors.password)}
           aria-describedby={fieldErrors.password ? "password-error" : undefined}
         />
@@ -139,7 +156,10 @@ export function LoginForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full rounded-lg bg-zinc-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60"
+        className={cn(
+          "w-full rounded-lg bg-zinc-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-zinc-800",
+          "disabled:cursor-not-allowed disabled:opacity-60",
+        )}
       >
         {loading ? t("form.submitting") : t("form.submit")}
       </button>
